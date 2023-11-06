@@ -93,7 +93,6 @@ const SideBar: React.FC<Props> = ({
         anchor="left"
         elevation={0}
         onClose={handleDrawerClose}
-        closeAfterTransition
         open={open}
       >
         <DrawerHeader/>

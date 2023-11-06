@@ -11,15 +11,16 @@ type Props = {
 const MainWindowItem: React.FC<React.PropsWithChildren<Props>> = (props) => {
   return (
     <WhiteWrapper>
-      <Grid container>
+      <Grid container height={'inherit'}>
         <Grid
-          padding={2}
+          height={'18%'}
+          px={2}
           item
           container
           xs={12}
           justifyContent={"space-between"}
         >
-          <Grid item xs={6}>
+          <Grid item xs={6} display={'flex'} alignItems={'center'}>
             <Typography variant="body1" fontWeight={600}>
               {props.title}
             </Typography>
@@ -32,10 +33,11 @@ const MainWindowItem: React.FC<React.PropsWithChildren<Props>> = (props) => {
           sx={{
             borderColor: "#F1F1F2",
             borderBottomWidth: "2px",
-            width: "100%"
+            width: "100%",
+            height: "0%",
           }}
         />
-        <Grid item container xs={12}>
+        <Grid height={'82%'} item container xs={12}>
           {props.children}
         </Grid>
       </Grid>
