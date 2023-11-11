@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
-import { ChartDataContextProvider } from "./context/ChartDataContext";
+import ChartDataContextProvider from "./context/ChartDataContext";
 import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(

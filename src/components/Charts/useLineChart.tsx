@@ -73,6 +73,7 @@ export const useLineChart = (
       .append("g")
       .call(xAxis.tickSize(0))
       .attr("transform", `translate(0,${h})`)
+      .attr("font-size", "1rem")
       .select(".domain")
       .remove();
 

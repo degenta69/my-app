@@ -9,7 +9,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import Notifications from "@mui/icons-material/Notifications";
 import Avatar from "@mui/material/Avatar";
 import { Search, SearchIconWrapper, StyledInputBase } from "../Controls/Search";
-import { Badge } from "@mui/material";
+import { Badge, Tooltip } from "@mui/material";
+import { ChartDataContext } from "../../context/ChartDataContext";
 
 type Props = {
   handleDrawerOpen: () => void;
@@ -17,6 +18,8 @@ type Props = {
 
 export default function TopBar({ handleDrawerOpen }: Props) {
   const [notificationCount] = React.useState(3);
+
+  const context = React.useContext(ChartDataContext)
 
   return (
     <>
@@ -59,7 +62,8 @@ export default function TopBar({ handleDrawerOpen }: Props) {
                 ml: 3,
               }}
             >
-              <IconButton disableRipple disableFocusRipple>
+              <Tooltip title="Randomize all datasets">
+              <IconButton onClick={()=>{context && context?.randomizeAllDatasets()}} disableRipple disableFocusRipple>
                 <Badge
                   color="primary"
                   variant="dot"
@@ -68,6 +72,7 @@ export default function TopBar({ handleDrawerOpen }: Props) {
                   <Notifications />
                 </Badge>
               </IconButton>
+              </Tooltip>
               <Avatar sx={{ ml: 3, borderRadius: 8, width: 24, height: 24, cursor:'pointer' }} />
             </Box>
           </Toolbar>

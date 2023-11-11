@@ -29,27 +29,19 @@ export const useBarChart = (
   }, []);
 
   useEffect(() => {
-    let lastObj = data[data.length - 1];
-    let lastObjTimestamp = lastObj.date;
-    let lastAndNow = moment(lastObjTimestamp).diff(moment(), "days");
-    console.log(
-      "difference between last entry " +
-        lastObjTimestamp +
-        " and today: " +
-        lastAndNow
-    );
 
-    const margin = { top: 20, right: 55, bottom: 40, left: 10 };
+    const margin = { top: 10, right: 30, bottom: 30, left: 30 };
     // setting up svg
     const w = width - (margin.left + margin.right);
     const h = height - (margin.top + margin.bottom);
 
     const svg = d3
-      .select(svgRef.current)
-      .attr("width", w)
-      .attr("height", h)
-      .style("overflow", "visible")
-      .style("background", "transparent");
+    .select(svgRef.current)
+    .attr("width", w)
+    .attr("height", h)
+    .style("overflow", "visible")
+    .style("background", "transparent")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     // clear all previous content on refresh
     const everything = svg.selectAll("*");
@@ -58,14 +50,13 @@ export const useBarChart = (
     // make xscale
     const xScale = d3
       .scaleTime()
-      //@ts-ignore
-      .domain(d3.extent(data, (d) => d.date)) // Assuming data is an array of objects with 'date' property
-      .range([margin.left, width - margin.right]);
+      .domain([data[data.length - 1].date,data[0].date]) // Assuming data is an array of objects with 'date' property
+      .range([0, (w - 10)]).nice();
 
     // make yscale
     const yScale = d3.scaleLinear().domain([0, 40]).range([h, 0]);
 
-    const xAxisTickFormat = (date: Date, i: number) => {
+    const xAxisTickFormat = (date: Date, i: number):any => {
         if (i === 0) {
             // For the first tick, display only the month and day
             return 'Future';
@@ -83,27 +74,32 @@ export const useBarChart = (
 
     const xAxis = d3
       .axisBottom(xScale)
-      .ticks(1) // Use timeWeek for weekly ticks
-      .tickSizeOuter(0) // Hide outer ticks
-      .tickSizeInner(0) // Hide inner ticks
+      .ticks(6) // Use timeWeek for weekly ticks
+      // .tickSizeOuter(0) // Hide outer ticks
+      // .tickSizeInner(0) // Hide inner ticks
+      .tickFormat(xAxisTickFormat as unknown as null) // Format tick labels as desired
       .tickPadding(10) // Margin between tick labels and tick marks
-      .tickValues(data.map((d) => d.date)) // Set tick values to data
-      .tickFormat(xAxisTickFormat); // Format tick labels as desired
+      .tickValues(data.map((d) => d.date)); // Set tick values to data
 
+      const barWidth = (xScale(data[0].date) - xScale(data[1].date)) * 0.5;
     // make group for x axis
     svg
       .append("g")
       .classed("x-axis-date", true)
       .call(xAxis.tickSize(0))
+      .style("font-size", "0.8rem")
       .attr("class", "x-axis")
-      .attr("transform", `translate(0, ${h})`)
+      .attr("transform", `translate(${barWidth / 5}, ${h})`)
       .select(".domain")
-      .remove();
+      .remove().attr("margin-left", margin.left);;
+
+
 
     // make bar chart with d3js v 7.8.5
 
     svg
-      .selectAll("rect")
+    .selectAll("rect")
+    // .attr("transform", `translate(-${barWidth/2}, 0)`)
       .data(data)
       .enter()
       .append("rect")
@@ -118,6 +114,8 @@ export const useBarChart = (
     //   .attr("stroke-width", 1)
     //   .attr("stroke-opacity", 0.5)
     //   .attr("opacity", 0.5)
+
+
   }, [data, height, svgRef, width]);
 
   return svgRef;
