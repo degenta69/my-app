@@ -1,6 +1,6 @@
 import React from "react";
 import { WhiteWrapper } from "../UiCard/BoxWrapper";
-import { Grid, Typography, Divider } from "@mui/material";
+import { Grid, Typography, Divider, Box } from "@mui/material";
 
 type Props = {
   title: string;
@@ -26,7 +26,7 @@ const MainWindowItem: React.FC<React.PropsWithChildren<Props>> = (props) => {
             </Typography>
           </Grid>
           <Grid item xs={6} container justifyContent={"flex-end"}>
-            {props.utilityWrapperId && <div id={props.utilityWrapperId}></div>}
+            {props.utilityWrapperId && <Box display={'flex'} id={props.utilityWrapperId}></Box>}
           </Grid>
         </Grid>
         <Divider
